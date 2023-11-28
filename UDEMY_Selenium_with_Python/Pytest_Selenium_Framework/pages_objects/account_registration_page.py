@@ -1,11 +1,10 @@
 from selenium.webdriver.support import expected_conditions as EC
 
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-class AccountRegistrationPage():
+class AccountRegistrationPage:
     input_username_id = 'Input_Username'
     input_email_id = 'Input_Email'
     input_password_id = 'Input_Password'

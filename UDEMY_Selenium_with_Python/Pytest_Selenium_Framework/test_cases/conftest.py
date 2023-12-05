@@ -44,11 +44,13 @@ def pytest_configure(config):
     config._metadata['Tester'] = 'Atanas Stankin'
 
 
-@pytest.mark.optionalhook
+@pytest.hookimpl(optionalhook=True)
 def pytest_metadata(metadata):
     metadata.pop("JAVA_HOME", None)
     metadata.pop('Plugins', None)
 
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
-    config.option.htmlpath = os.path.abspath(os.curdir)+'\\reports\\'+datetime.now().strftime("%d-%m-%Y %H-%M-%S")+".html"
+    config.option.htmlpath = os.path.abspath(os.curdir) + '\\reports\\' + datetime.now().strftime(
+        "%d-%m-%Y %H-%M-%S") + ".html"

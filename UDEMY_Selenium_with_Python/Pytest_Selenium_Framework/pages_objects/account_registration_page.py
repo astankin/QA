@@ -13,6 +13,8 @@ class AccountRegistrationPage:
     input_last_name_id = 'Input_LastName'
     btn_register_css_selector = "button[type='submit'].btn.btn-primary"
     conf_msg_class_name = 'text-center'
+    error_message_xpath = '/html/body/div/main/div/div/form/div[1]/ul/li'
+    register_link_xpath = '/html/body/header/nav/div/div/ul[1]/li[1]/a'
 
     def __init__(self, driver):
         self.driver = driver
@@ -50,3 +52,19 @@ class AccountRegistrationPage:
         )
         self.h1_text = self.element.text
         return self.h1_text
+
+    def get_error_message(self):
+        return self.driver.find_element(By.XPATH, self.error_message_xpath)
+
+    def click_register_link(self):
+        self.driver.find_element(By.XPATH, self.register_link_xpath).click()
+
+    def register(self, username, email, password, confirm_pass, first_name, last_name):
+        self.set_username(username)
+        self.set_email(email)
+        self.set_password(password)
+        self.set_confirm_password(confirm_pass)
+        self.set_first_name(first_name)
+        self.set_last_name(last_name)
+        self.click_register()
+

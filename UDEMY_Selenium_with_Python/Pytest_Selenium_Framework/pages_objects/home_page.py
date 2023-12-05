@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class HomePage():
+class HomePage:
     my_account_xpath = "//*[@id='top']/div[2]/div[2]/ul/li[2]/div/a"
     register_link_txt = 'Register'
     login_link_txt = 'Login'

@@ -12,16 +12,9 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 def setup(request):
     browser = request.config.getoption("--browser")
 
-    if browser == 'chrome':
-        options = webdriver.ChromeOptions()
-        options.add_argument("start-maximized")
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    elif browser == 'firefox':
-        driver = webdriver.Firefox(GeckoDriverManager().install())
-    elif browser == 'edge':
-        driver = webdriver.Edge(EdgeChromiumDriverManager().install())
-    else:
-        raise ValueError(f"Invalid browser specified: {browser}")
+    options = webdriver.ChromeOptions()
+    options.add_argument("start-maximized")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     yield driver
     driver.quit()

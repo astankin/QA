@@ -148,8 +148,9 @@ class TestUserRegistration:
 
             expected_message = f"Username '{username}' is invalid, can only contain letters or digits."
             try:
-                message_element_text = self.register_page.get_error_message().text
-                assert expected_message == message_element_text
+                message_element = self.register_page.get_error_message()
+                assert message_element.is_displayed()
+                assert expected_message == message_element.text
             except NoSuchElementException:
                 not_allowed_chars.append(username[-1])
                 self.my_account_page = MyAccountPage(self.driver)

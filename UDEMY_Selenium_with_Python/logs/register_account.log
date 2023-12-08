@@ -1,0 +1,104 @@
+2023-11-27 21:28:19,614 - INFO - ====== WebDriver manager ======
+2023-11-27 21:28:21,425 - INFO - Get LATEST chromedriver version for google-chrome
+2023-11-27 21:28:21,430 - DEBUG - Starting new HTTPS connection (1): chromedriver.storage.googleapis.com:443
+2023-11-27 21:28:21,569 - DEBUG - https://chromedriver.storage.googleapis.com:443 "GET /LATEST_RELEASE_107.0.5304 HTTP/1.1" 200 13
+2023-11-27 21:28:21,576 - INFO - Get LATEST chromedriver version for google-chrome
+2023-11-27 21:28:21,581 - DEBUG - Starting new HTTPS connection (1): chromedriver.storage.googleapis.com:443
+2023-11-27 21:28:21,713 - DEBUG - https://chromedriver.storage.googleapis.com:443 "GET /LATEST_RELEASE_107.0.5304 HTTP/1.1" 200 13
+2023-11-27 21:28:21,725 - INFO - Driver [C:\Users\user\.wdm\drivers\chromedriver\win64\107.0.5304.62\chromedriver.exe] found in cache
+2023-11-27 21:28:21,742 - DEBUG - Started executable: `C:\Users\user\.wdm\drivers\chromedriver\win64\107.0.5304.62\chromedriver.exe` in a child process with pid: 1500
+2023-11-27 21:28:22,261 - DEBUG - POST http://localhost:50674/session {"capabilities": {"firstMatch": [{}], "alwaysMatch": {"browserName": "chrome", "pageLoadStrategy": "normal", "goog:chromeOptions": {"extensions": [], "args": ["start-maximized"]}}}}
+2023-11-27 21:28:22,262 - DEBUG - Starting new HTTP connection (1): localhost:50674
+2023-11-27 21:28:23,597 - DEBUG - http://localhost:50674 "POST /session HTTP/1.1" 200 0
+2023-11-27 21:28:23,598 - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"107.0.5304.107","chrome":{"chromedriverVersion":"107.0.5304.62 (1eec40d3a5764881c92085aaee66d25075c159aa-refs/branch-heads/5304@{#942})","userDataDir":"C:\\Users\\user\\AppData\\Local\\Temp\\scoped_dir1500_748447802"},"goog:chromeOptions":{"debuggerAddress":"localhost:50677"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"windows","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:virtualAuthenticators":true},"sessionId":"daad9e5625a00502364f02ee4527221b"}} | headers=HTTPHeaderDict({'Content-Length': '788', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:23,598 - DEBUG - Finished Request
+2023-11-27 21:28:23,599 - INFO - *** test_001_AccountRegistration started ***
+2023-11-27 21:28:23,601 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/url {"url": "http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com:81/"}
+2023-11-27 21:28:24,211 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/url HTTP/1.1" 200 0
+2023-11-27 21:28:24,212 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,212 - DEBUG - Finished Request
+2023-11-27 21:28:24,212 - INFO - Launching application
+2023-11-27 21:28:24,213 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/window/maximize {}
+2023-11-27 21:28:24,217 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/window/maximize HTTP/1.1" 200 0
+2023-11-27 21:28:24,217 - DEBUG - Remote response: status=200 | data={"value":{"height":840,"width":1552,"x":-8,"y":-8}} | headers=HTTPHeaderDict({'Content-Length': '51', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,218 - DEBUG - Finished Request
+2023-11-27 21:28:24,218 - INFO - click on [Register]
+2023-11-27 21:28:24,219 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "link text", "value": "Register"}
+2023-11-27 21:28:24,241 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:24,241 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"0af2d855-1824-4052-8381-c632dea95f03"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,242 - DEBUG - Finished Request
+2023-11-27 21:28:24,242 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/0af2d855-1824-4052-8381-c632dea95f03/click {}
+2023-11-27 21:28:24,526 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/0af2d855-1824-4052-8381-c632dea95f03/click HTTP/1.1" 200 0
+2023-11-27 21:28:24,526 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,526 - DEBUG - Finished Request
+2023-11-27 21:28:24,526 - INFO - Providing customer details for registration
+2023-11-27 21:28:24,534 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_Username\"]"}
+2023-11-27 21:28:24,555 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:24,556 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"b8bbef6d-1963-45f5-95c5-15024fd02ecc"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,556 - DEBUG - Finished Request
+2023-11-27 21:28:24,556 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/b8bbef6d-1963-45f5-95c5-15024fd02ecc/value {"text": "gsZ3Az", "value": ["g", "s", "Z", "3", "A", "z"]}
+2023-11-27 21:28:24,672 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/b8bbef6d-1963-45f5-95c5-15024fd02ecc/value HTTP/1.1" 200 0
+2023-11-27 21:28:24,673 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,673 - DEBUG - Finished Request
+2023-11-27 21:28:24,673 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_Email\"]"}
+2023-11-27 21:28:24,692 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:24,692 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"bf1582e4-4cac-4f65-af84-7d7946453d39"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,692 - DEBUG - Finished Request
+2023-11-27 21:28:24,692 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/bf1582e4-4cac-4f65-af84-7d7946453d39/value {"text": "john_doe@gmail.com", "value": ["j", "o", "h", "n", "_", "d", "o", "e", "@", "g", "m", "a", "i", "l", ".", "c", "o", "m"]}
+2023-11-27 21:28:24,840 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/bf1582e4-4cac-4f65-af84-7d7946453d39/value HTTP/1.1" 200 0
+2023-11-27 21:28:24,840 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,840 - DEBUG - Finished Request
+2023-11-27 21:28:24,841 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_Password\"]"}
+2023-11-27 21:28:24,858 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:24,858 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"8e970caf-a78d-4b63-ac89-07c595f65cfc"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,859 - DEBUG - Finished Request
+2023-11-27 21:28:24,859 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/8e970caf-a78d-4b63-ac89-07c595f65cfc/value {"text": "password123", "value": ["p", "a", "s", "s", "w", "o", "r", "d", "1", "2", "3"]}
+2023-11-27 21:28:24,987 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/8e970caf-a78d-4b63-ac89-07c595f65cfc/value HTTP/1.1" 200 0
+2023-11-27 21:28:24,987 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:24,988 - DEBUG - Finished Request
+2023-11-27 21:28:24,988 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_ConfirmPassword\"]"}
+2023-11-27 21:28:25,012 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:25,012 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"0eaa3595-3cfc-4423-b129-ef438f9e088a"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,013 - DEBUG - Finished Request
+2023-11-27 21:28:25,013 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/0eaa3595-3cfc-4423-b129-ef438f9e088a/value {"text": "password123", "value": ["p", "a", "s", "s", "w", "o", "r", "d", "1", "2", "3"]}
+2023-11-27 21:28:25,167 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/0eaa3595-3cfc-4423-b129-ef438f9e088a/value HTTP/1.1" 200 0
+2023-11-27 21:28:25,167 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,168 - DEBUG - Finished Request
+2023-11-27 21:28:25,168 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_FirstName\"]"}
+2023-11-27 21:28:25,193 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:25,194 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"e379caea-1628-42a7-aefa-bde4d624b23f"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,194 - DEBUG - Finished Request
+2023-11-27 21:28:25,195 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/e379caea-1628-42a7-aefa-bde4d624b23f/value {"text": "John", "value": ["J", "o", "h", "n"]}
+2023-11-27 21:28:25,318 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/e379caea-1628-42a7-aefa-bde4d624b23f/value HTTP/1.1" 200 0
+2023-11-27 21:28:25,318 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,319 - DEBUG - Finished Request
+2023-11-27 21:28:25,319 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "[id=\"Input_LastName\"]"}
+2023-11-27 21:28:25,342 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:25,343 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"433de512-8570-41d0-a071-1993542c6b53"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,343 - DEBUG - Finished Request
+2023-11-27 21:28:25,343 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/433de512-8570-41d0-a071-1993542c6b53/value {"text": "Doe", "value": ["D", "o", "e"]}
+2023-11-27 21:28:25,465 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/433de512-8570-41d0-a071-1993542c6b53/value HTTP/1.1" 200 0
+2023-11-27 21:28:25,465 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,466 - DEBUG - Finished Request
+2023-11-27 21:28:25,467 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": "button[type='submit'].btn.btn-primary"}
+2023-11-27 21:28:25,492 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:25,492 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"e3900bac-87c0-4e40-80aa-b8a73a450646"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:25,493 - DEBUG - Finished Request
+2023-11-27 21:28:25,493 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/e3900bac-87c0-4e40-80aa-b8a73a450646/click {}
+2023-11-27 21:28:26,416 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element/e3900bac-87c0-4e40-80aa-b8a73a450646/click HTTP/1.1" 200 0
+2023-11-27 21:28:26,417 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:26,419 - DEBUG - Finished Request
+2023-11-27 21:28:26,420 - DEBUG - POST http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element {"using": "css selector", "value": ".text-center"}
+2023-11-27 21:28:26,443 - DEBUG - http://localhost:50674 "POST /session/daad9e5625a00502364f02ee4527221b/element HTTP/1.1" 200 0
+2023-11-27 21:28:26,443 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"6e926ce6-e1ae-4136-9118-bcd4e5ac6d13"}} | headers=HTTPHeaderDict({'Content-Length': '88', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:26,444 - DEBUG - Finished Request
+2023-11-27 21:28:26,444 - DEBUG - GET http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/element/6e926ce6-e1ae-4136-9118-bcd4e5ac6d13/text {}
+2023-11-27 21:28:26,466 - DEBUG - http://localhost:50674 "GET /session/daad9e5625a00502364f02ee4527221b/element/6e926ce6-e1ae-4136-9118-bcd4e5ac6d13/text HTTP/1.1" 200 0
+2023-11-27 21:28:26,466 - DEBUG - Remote response: status=200 | data={"value":"Welcome, gsZ3Az"} | headers=HTTPHeaderDict({'Content-Length': '27', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:26,466 - DEBUG - Finished Request
+2023-11-27 21:28:26,467 - INFO - Registration PASSED
+2023-11-27 21:28:26,467 - DEBUG - DELETE http://localhost:50674/session/daad9e5625a00502364f02ee4527221b/window {}
+2023-11-27 21:28:26,600 - DEBUG - http://localhost:50674 "DELETE /session/daad9e5625a00502364f02ee4527221b/window HTTP/1.1" 200 0
+2023-11-27 21:28:26,600 - DEBUG - Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2023-11-27 21:28:26,601 - DEBUG - Finished Request
+2023-11-27 21:28:26,601 - INFO - *** test_001_AccountRegistration finished ***

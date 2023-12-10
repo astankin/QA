@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from pages_objects.account_registration_page import AccountRegistrationPage
 from pages_objects.home_page import HomePage
 from pages_objects.my_account_page import MyAccountPage
+from utilities import XLUtils
 from utilities.custom_logger import setup_logger
 from utilities.read_properties import ReadConfig
 from utilities.username_generator import generate_random_username
@@ -23,6 +24,7 @@ class TestUserRegistration:
     base_url = ReadConfig.get_application_url()
     chars = ReadConfig.get_chars_list()
     logger = setup_logger(log_file_path='logs/register_account.log')
+    path = os.path.abspath(os.curdir) + "\\test_data\\Opencart_LoginData.xlsx"
 
     def open_register_form(self, setup):
         self.driver = setup
@@ -129,7 +131,6 @@ class TestUserRegistration:
 
         self.logger.info("******* End of test_001_register_Datadriven **********")
 
-    @pytest.mark.regression
     def test_register_user_with_username_contains_special_char(self, setup):
         self.open_register_form(setup)
         self.logger.info("Providing customer details for registration")
@@ -159,3 +160,93 @@ class TestUserRegistration:
             self.home_page.click_register()
         if len(not_allowed_chars) > 0:
             raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
+
+    def test_register_user_with_empty_username_raises(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with empty username")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = ''
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_message = f"The Username field is required."
+        message_element = self.register_page.get_error_message()
+        message_element_text = message_element.text
+        assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+        assert expected_message == message_element_text
+
+    def test_register_user_with_username_les_then_5_chars(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with username less then 5 chars")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(3)
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        expected_message = "The Username must be at least 5 characters long."
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert expected_message == message_element_text
+        except NoSuchElementException:
+            raise AssertionError("The username can NOT be less then 5 characters")
+
+
+    def test_register_user_with_email_without_at_symbol(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with email without @ symbol")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.email = XLUtils.read_data(self.path, "Registration", 2, 1)
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        expected_message = f"The Email field is not a valid e-mail address."
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert expected_message == message_element_text
+        except:
+            raise AssertionError("The email must contain '@' symbol!")
+
+    @pytest.mark.regression
+    def test_register_user_with_email_without_domain(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with email without domain")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.email = XLUtils.read_data(self.path, "Registration", 3, 1)
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        expected_message = f"The Email field is not a valid e-mail address."
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert expected_message == message_element_text
+        except NoSuchElementException:
+            raise AssertionError('Test Failed! Email must contains domain')

@@ -203,6 +203,30 @@ class TestUserRegistration:
         except NoSuchElementException:
             raise AssertionError("The username can NOT be less then 5 characters")
 
+    ############ Testing Registration Email Field ########################################
+
+    def test_register_user_with_email_with_empty_email(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with empty email field")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.email = ''
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_message = "The Email field is required."
+
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert expected_message == message_element_text
+        except NoSuchElementException:
+            raise AssertionError('Test Failed! Email can not be empty!')
 
     def test_register_user_with_email_without_at_symbol(self, setup):
         self.open_register_form(setup)
@@ -227,7 +251,6 @@ class TestUserRegistration:
         except:
             raise AssertionError("The email must contain '@' symbol!")
 
-    @pytest.mark.regression
     def test_register_user_with_email_without_domain(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with email without domain")
@@ -250,3 +273,26 @@ class TestUserRegistration:
             assert expected_message == message_element_text
         except NoSuchElementException:
             raise AssertionError('Test Failed! Email must contains domain')
+
+    @pytest.mark.regression
+    def test_register_user_with_email_without_name(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with email without name")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.email = '@yahoo.com'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_message = "The Email field is not a valid e-mail address."
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert message_element_text == expected_message
+        except NoSuchElementException:
+            raise AssertionError('Test Failed! Email must contains name')

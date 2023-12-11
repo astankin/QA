@@ -1,4 +1,5 @@
 import os
+import random
 from time import sleep
 
 import pytest
@@ -68,6 +69,21 @@ class TestUserRegistration:
             self.driver.close()
             assert False
         self.logger.info("*** test_001_AccountRegistration finished ***")
+
+    def test_register_form_submit_with_empty_fields_error_messages_are_displayed(self, setup):
+        self.logger.info("Starting register with empty fields")
+        self.open_register_form(setup)
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.register_page.click_register()
+        error_messages = self.driver.find_elements(By.CSS_SELECTOR, "div.text-danger.validation-summary-errors ul li")
+        messages = []
+        for message in error_messages:
+            messages.append(message.text)
+        assert "The Username field is required." in messages
+        assert "The Email field is required." in messages
+        assert "The Password field is required." in messages
+        assert "The First Name field is required." in messages
+        assert "The Last Name field is required." in messages
 
     def test_register_with_existing_username(self, setup):
         username = 'astankin235'
@@ -161,7 +177,7 @@ class TestUserRegistration:
         if len(not_allowed_chars) > 0:
             raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
 
-    def test_register_user_with_empty_username_raises(self, setup):
+    def test_register_user_with_empty_username_field(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with empty username")
         self.register_page = AccountRegistrationPage(self.driver)
@@ -180,6 +196,29 @@ class TestUserRegistration:
         assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
         assert expected_message == message_element_text
 
+    def test_register_user_with_numbers_only(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test username contains only numbers")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = random.randint(100000, 999999)
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_message = f"The Username field is required."
+        try:
+            message_element = self.register_page.get_error_message()
+            message_element_text = message_element.text
+            assert message_element.is_displayed(), f"Expected message: '{expected_message}' not found on the page."
+            assert expected_message == message_element_text
+        except:
+            raise AssertionError("The username can NOT contains numbers")
+
+    @pytest.mark.regression
     def test_register_user_with_username_les_then_5_chars(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with username less then 5 chars")
@@ -256,6 +295,7 @@ class TestUserRegistration:
         self.logger.info("Starting test with email without domain")
         self.register_page = AccountRegistrationPage(self.driver)
         self.email = XLUtils.read_data(self.path, "Registration", 3, 1)
+        self.username = generate_random_username(5)
         self.register_page.register(
             self.username,
             self.email,
@@ -274,14 +314,14 @@ class TestUserRegistration:
         except NoSuchElementException:
             raise AssertionError('Test Failed! Email must contains domain')
 
-    @pytest.mark.regression
     def test_register_user_with_email_without_name(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with email without name")
         self.register_page = AccountRegistrationPage(self.driver)
         self.email = '@yahoo.com'
+        username = generate_random_username(5)
         self.register_page.register(
-            self.username,
+            username,
             self.email,
             self.password,
             self.conf_password,
@@ -296,3 +336,85 @@ class TestUserRegistration:
             assert message_element_text == expected_message
         except NoSuchElementException:
             raise AssertionError('Test Failed! Email must contains name')
+
+    def test_register_user_with_email_with_more_then_one_domain_name(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with email with more domains")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.email = XLUtils.read_data(self.path, "Registration", 4, 1)
+        username = generate_random_username(5)
+        self.register_page.register(
+            username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_message = f"Welcome, {username}"
+        try:
+            message_element = self.register_page.get_confirm_msg()
+            assert expected_message == message_element
+            expected_url = "http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com:81/"
+            assert expected_url == self.driver.current_url
+        except:
+            assert False
+
+    def test_register_user_with_email_contains_special_char(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with email contains special char")
+        self.register_page = AccountRegistrationPage(self.driver)
+        not_allowed_chars = []
+        base_email = 'something'
+        domain = '@yahoo.com'
+        emails = [base_email + char for char in self.chars]
+        for email in emails:
+            self.username = generate_random_username(5)
+            char = email[-1]
+            email += domain
+            self.register_page.register(
+                self.username,
+                email,
+                self.password,
+                self.conf_password,
+                self.first_name,
+                self.last_name
+            )
+            expected_message = 'The Email field is not a valid e-mail address.'
+            try:
+                message_element = self.register_page.get_error_message()
+                message_element_text = message_element.text
+                assert expected_message == message_element_text
+            except NoSuchElementException:
+                not_allowed_chars.append(char)
+                self.my_account_page = MyAccountPage(self.driver)
+                self.my_account_page.click_logout()
+            self.home_page = HomePage(self.driver)
+            self.home_page.click_register()
+        if not_allowed_chars:
+            raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
+
+#################### Testing Password Field ########################################################
+
+    def test_register_user_with_password_less_then_5_symbols(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with password les then 5 symbols")
+        self.register_page = AccountRegistrationPage(self.driver)
+        username = generate_random_username(7)
+        self.password1 = 'pass'
+        self.password2 = 'pass'
+        self.register_page.register(
+            username,
+            self.email,
+            self.password1,
+            self.password2,
+            self.first_name,
+            self.last_name
+        )
+        expected_error_text = "The Password must be at least 6 and at max 20 characters long."
+        try:
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The Password must be at least 6 characters long")

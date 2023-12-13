@@ -27,9 +27,9 @@ class TestLoginDDT:
         self.driver.get(self.baseURL)
         self.driver.maximize_window()
 
-        self.home_page = HomePage(self.driver)  # HomePage Page Object Class
-        self.login_page = LoginPage(self.driver)  # LoginPage Page Object Class
-        self.my_account_page = MyAccountPage(self.driver)  # MyAccount Page Object class
+        self.home_page = HomePage(self.driver)
+        self.login_page = LoginPage(self.driver)
+        self.my_account_page = MyAccountPage(self.driver)
 
         for r in range(2, self.rows + 1):
             self.home_page.click_login()

@@ -86,12 +86,13 @@ class TestUserRegistration:
         assert "The Last Name field is required." in messages
 
     def test_register_with_existing_username(self, setup):
-        username = 'astankin235'
+
+        self.username = 'username'
         self.open_register_form(setup)
 
         self.register_page = AccountRegistrationPage(self.driver)
         self.register_page.register(
-            username,
+            self.username,
             self.email,
             self.password,
             self.conf_password,
@@ -99,7 +100,7 @@ class TestUserRegistration:
             self.last_name
         )
 
-        expected_message = f"Username '{username}' is already taken."
+        expected_message = f"Username '{self.username}' is already taken."
         error_message = self.register_page.get_error_message()
         assert error_message.is_displayed()
         assert expected_message == error_message.text
@@ -218,7 +219,6 @@ class TestUserRegistration:
         except:
             raise AssertionError("The username can NOT contains numbers")
 
-    @pytest.mark.regression
     def test_register_user_with_username_les_then_5_chars(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with username less then 5 chars")
@@ -248,6 +248,7 @@ class TestUserRegistration:
         self.open_register_form(setup)
         self.logger.info("Starting test with empty email field")
         self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(7)
         self.email = ''
         self.register_page.register(
             self.username,
@@ -272,6 +273,7 @@ class TestUserRegistration:
         self.logger.info("Starting test with email without @ symbol")
         self.register_page = AccountRegistrationPage(self.driver)
         self.email = XLUtils.read_data(self.path, "Registration", 2, 1)
+        self.username = generate_random_username(9)
         self.register_page.register(
             self.username,
             self.email,
@@ -319,9 +321,9 @@ class TestUserRegistration:
         self.logger.info("Starting test with email without name")
         self.register_page = AccountRegistrationPage(self.driver)
         self.email = '@yahoo.com'
-        username = generate_random_username(5)
+        self.username = generate_random_username(5)
         self.register_page.register(
-            username,
+            self.username,
             self.email,
             self.password,
             self.conf_password,
@@ -342,16 +344,16 @@ class TestUserRegistration:
         self.logger.info("Starting test with email with more domains")
         self.register_page = AccountRegistrationPage(self.driver)
         self.email = XLUtils.read_data(self.path, "Registration", 4, 1)
-        username = generate_random_username(5)
+        self.username = generate_random_username(5)
         self.register_page.register(
-            username,
+            self.username,
             self.email,
             self.password,
             self.conf_password,
             self.first_name,
             self.last_name
         )
-        expected_message = f"Welcome, {username}"
+        expected_message = f"Welcome, {self.username}"
         try:
             message_element = self.register_page.get_confirm_msg()
             assert expected_message == message_element
@@ -394,17 +396,17 @@ class TestUserRegistration:
         if not_allowed_chars:
             raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
 
-#################### Testing Password Field ########################################################
+    #################### Testing Password Field ########################################################
 
     def test_register_user_with_password_less_then_5_symbols(self, setup):
         self.open_register_form(setup)
         self.logger.info("Starting test with password les then 5 symbols")
         self.register_page = AccountRegistrationPage(self.driver)
-        username = generate_random_username(7)
+        self.username = generate_random_username(7)
         self.password1 = 'pass'
         self.password2 = 'pass'
         self.register_page.register(
-            username,
+            self.username,
             self.email,
             self.password1,
             self.password2,
@@ -418,3 +420,321 @@ class TestUserRegistration:
             assert error_text.text == expected_error_text
         except:
             raise AssertionError("The Password must be at least 6 characters long")
+
+    def test_register_user_with_empty_password(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with empty password field")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(8)
+        self.password = ""
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_error_text = "The Password field is required."
+        try:
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except NoSuchElementException:
+            raise AssertionError("The password can not be an empty string!")
+
+    def test_register_user_with_empty_confirm_password(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with empty confirm password field")
+        self.register_page = AccountRegistrationPage(self.driver)
+        username = generate_random_username(7)
+        self.conf_password = ""
+        self.register_page.register(
+            username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_error_text = "The password2 must match password1."
+        try:
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed(), "Error message is not displayed"
+            assert error_text.text == expected_error_text, "Unexpected error message"
+        except NoSuchElementException:
+            raise AssertionError("The confirm password field can NOT be empty")
+        self.logger.info("Finished test with empty confirm password field")
+
+    @pytest.mark.regression
+    def test_register_user_with_confirm_password_mismatch_password(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with confirm password mismatch password")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(7)
+        self.conf_password = "wrong"
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        expected_error_text = "The password2 must match password1"
+        try:
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except NoSuchElementException:
+            raise AssertionError("The confirm password must be the same as password")
+
+    ################ Testing First Name Field ################################################
+
+    def test_register_user_with_first_name_length_les_then_2_letters(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with confirm first name less then 2 letters")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(8)
+        self.first_name = 'J'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The name must be at least 2 letters long."
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The first name must be at least 2 letters long.")
+
+    def test_register_user_with_first_name_empty_string(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with confirm first name empty field")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(8)
+        self.first_name = ''
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The First Name field is required."
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The first name must be at least 2 letters long.")
+
+    def test_register_user_with_first_name_contains_only_numbers(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with first name contains only numbers")
+        self.register_page = AccountRegistrationPage(setup)
+        self.username = generate_random_username(9)
+        self.first_name = '123456'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        try:
+            expected_error_text = "The name must contains only letters"
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The first name must contains only letters")
+
+    def test_register_user_with_first_name_contains_special_characters(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with first name contains special char")
+        self.register_page = AccountRegistrationPage(setup)
+        f_name_with_char = [self.username + str(char) for char in self.chars]
+        not_allowed_chars = []
+        for f_name in f_name_with_char:
+            self.username = generate_random_username(7)
+            self.register_page.register(
+                self.username,
+                self.email,
+                self.password,
+                self.conf_password,
+                f_name,
+                self.last_name
+            )
+
+            try:
+                expected_error_text = "The name must contains only letters"
+                error_text = self.register_page.get_error_message()
+                assert error_text.is_displayed()
+                assert error_text.text == expected_error_text
+            except NoSuchElementException:
+                not_allowed_chars.append(f_name[-1])
+                self.my_account_page = MyAccountPage(self.driver)
+                self.my_account_page.click_logout()
+            self.home_page = HomePage(self.driver)
+            self.home_page.click_register()
+
+        if len(not_allowed_chars) > 0:
+            raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
+
+    def test_register_user_with_first_name_contains_white_space(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with first name contains white space")
+        self.register_page = AccountRegistrationPage(setup)
+        self.username = generate_random_username(6)
+        self.first_name = 'John Doe'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The name must contains only letters"
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("First name can not contains white space")
+
+    ################ Testing Last Name Field ##################################################
+
+    @pytest.mark.current
+    def test_register_user_with_last_name_length_les_then_2_letters(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with confirm last name less then 2 letters")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(8)
+        self.last_name = 'D'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The name must be at least 2 letters long."
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The last name must be at least 2 letters long.")
+
+    def test_register_user_with_last_name_empty_string(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with last name empty field")
+        self.register_page = AccountRegistrationPage(self.driver)
+        self.username = generate_random_username(8)
+        self.last_name = ''
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The First Name field is required."
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The last name must be at least 2 letters long.")
+
+    def test_register_user_with_last_name_contains_only_numbers(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with last name contains only numbers")
+        self.register_page = AccountRegistrationPage(setup)
+        self.username = generate_random_username(9)
+        self.last_name = '123456'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+        try:
+            expected_error_text = "The name must contains only letters"
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("The last name must contains only letters")
+
+    def test_register_user_with_last_name_contains_special_characters(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with last name contains special char")
+        self.register_page = AccountRegistrationPage(setup)
+        l_name_with_char = [self.username + str(char) for char in self.chars]
+        not_allowed_chars = []
+        for l_name in l_name_with_char:
+            self.username = generate_random_username(7)
+            self.register_page.register(
+                self.username,
+                self.email,
+                self.password,
+                self.conf_password,
+                self.first_name,
+                l_name
+            )
+            try:
+                expected_error_text = "The name must contains only letters"
+                error_text = self.register_page.get_error_message()
+                assert error_text.is_displayed()
+                assert error_text.text == expected_error_text
+            except NoSuchElementException:
+                not_allowed_chars.append(l_name[-1])
+                self.my_account_page = MyAccountPage(self.driver)
+                self.my_account_page.click_logout()
+            self.home_page = HomePage(self.driver)
+            self.home_page.click_register()
+
+        if len(not_allowed_chars) > 0:
+            raise AssertionError(f"Test Failed! Characters: '{', '.join(not_allowed_chars)}' are not allowed")
+
+    def test_register_user_with_last_name_contains_white_space(self, setup):
+        self.open_register_form(setup)
+        self.logger.info("Starting test with first name contains white space")
+        self.register_page = AccountRegistrationPage(setup)
+        self.username = generate_random_username(9)
+        self.last_name = 'John Doe'
+        self.register_page.register(
+            self.username,
+            self.email,
+            self.password,
+            self.conf_password,
+            self.first_name,
+            self.last_name
+        )
+
+        try:
+            expected_error_text = "The name must contains only letters"
+            error_text = self.register_page.get_error_message()
+            assert error_text.is_displayed()
+            assert error_text.text == expected_error_text
+        except:
+            raise AssertionError("Last name can NOT contains white space!")

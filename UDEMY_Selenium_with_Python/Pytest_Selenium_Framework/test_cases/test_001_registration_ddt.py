@@ -2,6 +2,7 @@ import os
 import random
 from time import sleep
 
+import allure
 import pytest
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -36,7 +37,9 @@ class TestUserRegistration:
         self.logger.info("click on [Register]")
         self.home_page.click_register()
 
-    @pytest.mark.sanity
+    @allure.feature("Account Registration")
+    @allure.title("Test Registration with Valid Data")
+    @pytest.mark.current
     def test_registration_with_valid_data(self, setup):
         self.logger.info("*** test_001_AccountRegistration started ***")
         self.open_register_form(setup)

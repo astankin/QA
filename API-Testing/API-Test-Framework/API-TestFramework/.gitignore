@@ -1,0 +1,6 @@
+# Ignore Allure report and results
+allure-report/
+allure-results/
+
+# Ignore logs
+logs/
